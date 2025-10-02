@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8"><title>ギャラリー</title></head>
+<body style="font-size:20px; text-align:center;">
+  <h2>ギャラリー</h2>
+  {% for m in medias %}
+    <div style="margin:20px;">
+      {% if m.media_type == 'image' %}
+        <a href="{{ url_for('files', filename=m.filename) }}" target="_blank">
+          <img src="{{ url_for('thumb', filename=m.filename.split('/')[-1].rsplit('.',1)[0] + '.jpg') }}" style="max-width:200px;">
+        </a>
+      {% else %}
+        <a href="{{ url_for('files', filename=m.filename) }}" target="_blank">
+          🎥 {{ m.original_name }}
+        </a>
+      {% endif %}
+      <p>{{ m.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</p>
+    </div>
+  {% endfor %}
+  <a href="{{ url_for('home') }}">🏠 ホームに戻る</a>
+</body>
+</html>

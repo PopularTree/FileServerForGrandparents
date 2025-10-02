@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>保存済みファイル</title>
+</head>
+<body style="text-align:center; font-size:20px;">
+  <h1>📂 保存済みファイル</h1>
+  <ul style="list-style:none; padding:0;">
+    {% for file in files %}
+      <li>
+        {{ file }}  
+        <a href="/download/{{ file }}">📥 ダウンロード</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <br>
+  <a href="/">⬅ アップロードに戻る</a>
+</body>
+</html>
