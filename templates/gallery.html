@@ -83,7 +83,9 @@
   <h2>ギャラリー</h2>
   <div class="search-box">
     <form method="get" action="{{ url_for('gallery') }}">
-      <input type="text" name="q" value="{{ query }}" placeholder="例: 2025-10 で年月検索">
+      {# 動的に年月を生成 #}
+      {% set now_year_month = now.strftime('%Y-%m') if now else '' %}
+      <input type="text" name="q" value="{{ query }}" placeholder="例: {{ now_year_month }} で年月検索">
       <button type="submit">🔍 検索</button>
       {% if query %}
         <a href="{{ url_for('gallery') }}">リセット</a>
