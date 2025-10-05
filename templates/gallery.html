@@ -3,40 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <title>ギャラリー</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    .gallery-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 24px;
+    body {
+      font-size: 2.2em;
+      text-align: center;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
     }
-    .gallery-item {
-      border: 1px solid #ccc;
-      border-radius: 8px;
+    button, input[type="submit"], input[type="button"] {
+      font-size: 2em;
+      padding: 20px 40px;
+      border-radius: 12px;
+      border: none;
+      background: #4caf50;
+      color: white;
+      margin: 12px 0;
+      cursor: pointer;
+    }
+    input[type="file"], input[type="text"] {
+      font-size: 1.5em;
       padding: 12px;
-      width: 220px;
-      background: #f9f9f9;
-      box-shadow: 2px 2px 6px #eee;
-      text-align: center;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      margin: 12px 0;
     }
-    .gallery-thumb {
-      max-width: 200px;
-      max-height: 150px;
-      border-radius: 4px;
-      margin-bottom: 8px;
+    a, label {
+      font-size: 1.3em;
+      padding: 8px;
     }
-    .search-box {
-      margin-bottom: 24px;
-      text-align: center;
+    @media (max-width: 600px) {
+      body { font-size: 1.3em; }
+      .gallery-grid { gap: 12px; }
+      .gallery-item { width: 95vw; max-width: 320px; }
+      button, input[type="submit"], input[type="button"] { font-size: 1.2em; padding: 16px 20px; }
+      input[type="file"], input[type="text"] { font-size: 1em; }
     }
   </style>
 </head>
-<body style="font-size:20px; text-align:center;">
-  <h2>ギャラリー</h2>
+<body>
+  <h2 style="font-size:2.2em; margin-top:32px;">ギャラリー</h2>
   <div class="search-box">
     <form method="get" action="{{ url_for('gallery') }}">
-      <input type="text" name="q" value="{{ query }}" placeholder="例: 2025-10-05 で撮影日検索" style="font-size:18px; width:240px;">
-      <button type="submit" style="font-size:18px;">🔍 検索</button>
+      <input type="text" name="q" value="{{ query }}" placeholder="例: 2025-10-05 で撮影日検索">
+      <button type="submit">🔍 検索</button>
       {% if query %}
         <a href="{{ url_for('gallery') }}">リセット</a>
       {% endif %}
@@ -47,15 +59,15 @@
       <div class="gallery-item">
         {% if m.media_type == 'image' %}
           <a href="{{ url_for('files', filename=m.filename) }}" target="_blank">
-            <img src="{{ url_for('thumb', filename=m.filename.split('/')[-1].rsplit('.',1)[0] + '.jpg') }}" class="gallery-thumb">
+            <img src="{{ url_for('thumb', filename=m.filename.split('/')[-1].rsplit('.',1)[0] + '.jpg') }}" class="gallery-thumb" style="max-width:90vw; max-height:40vh;">
           </a>
         {% else %}
           <a href="{{ url_for('files', filename=m.filename) }}" target="_blank">
-            <img src="/static/video_icon.png" class="gallery-thumb" alt="動画">
+            <img src="/static/video_icon.png" class="gallery-thumb" alt="動画" style="max-width:90vw; max-height:40vh;">
             <br>🎥 {{ m.original_name }}
           </a>
         {% endif %}
-        <div style="font-size:14px; margin-top:6px;">
+        <div style="font-size:1em; margin-top:6px;">
           {{ m.original_name }}<br>
           {% if m.taken_at %}
             撮影: {{ m.taken_at.strftime('%Y-%m-%d %H:%M') }}<br>
