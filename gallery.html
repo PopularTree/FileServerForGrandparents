@@ -1,22 +1,68 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>ギャラリー</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>ギャラリー</title>
+  <style>
+    .gallery-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+    }
+    .gallery-item {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px;
+      width: 220px;
+      background: #f9f9f9;
+      box-shadow: 2px 2px 6px #eee;
+      text-align: center;
+    }
+    .gallery-thumb {
+      max-width: 200px;
+      max-height: 150px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .search-box {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+  </style>
+</head>
 <body style="font-size:20px; text-align:center;">
   <h2>ギャラリー</h2>
-  {% for m in medias %}
-    <div style="margin:20px;">
-      {% if m.media_type == 'image' %}
-        <a href="{{ url_for('files', filename=m.filename) }}" target="_blank">
-          <img src="{{ url_for('thumb', filename=m.filename.split('/')[-1].rsplit('.',1)[0] + '.jpg') }}" style="max-width:200px;">
-        </a>
-      {% else %}
-        <a href="{{ url_for('files', filename=m.filename) }}" target="_blank">
-          🎥 {{ m.original_name }}
-        </a>
+  <div class="search-box">
+    <form method="get" action="{{ url_for('gallery') }}">
+      <input type="text" name="q" value="{{ query }}" placeholder="ファイル名で検索" style="font-size:18px; width:240px;">
+      <button type="submit" style="font-size:18px;">🔍 検索</button>
+      {% if query %}
+        <a href="{{ url_for('gallery') }}">リセット</a>
       {% endif %}
-      <p>{{ m.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</p>
-    </div>
-  {% endfor %}
+    </form>
+  </div>
+  <div class="gallery-grid">
+    {% for m in medias %}
+      <div class="gallery-item">
+        {% if m.media_type == 'image' %}
+          <a href="{{ url_for('files', filename=m.filename) }}" target="_blank">
+            <img src="{{ url_for('thumb', filename=m.filename.split('/')[-1].rsplit('.',1)[0] + '.jpg') }}" class="gallery-thumb">
+          </a>
+        {% else %}
+          <a href="{{ url_for('files', filename=m.filename) }}" target="_blank">
+            <img src="/static/video_icon.png" class="gallery-thumb" alt="動画">
+            <br>🎥 {{ m.original_name }}
+          </a>
+        {% endif %}
+        <div style="font-size:14px; margin-top:6px;">
+          {{ m.original_name }}<br>
+          {{ m.uploaded_at.strftime('%Y-%m-%d %H:%M') }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <br>
   <a href="{{ url_for('home') }}">🏠 ホームに戻る</a>
 </body>
 </html>

@@ -47,12 +47,18 @@ def upload_page():
         return redirect(url_for("gallery"))
     return render_template("upload.html")
 
-@app.route("/gallery")
+@app.route("/gallery", methods=["GET"])
 def gallery():
+    query = request.args.get("q", "")
     session = Session()
-    medias = session.query(Media).order_by(Media.uploaded_at.desc()).all()
+    if query:
+        medias = session.query(Media).filter(
+            Media.original_name.like(f"%{query}%")
+        ).order_by(Media.uploaded_at.desc()).all()
+    else:
+        medias = session.query(Media).order_by(Media.uploaded_at.desc()).all()
     session.close()
-    return render_template("gallery.html", medias=medias)
+    return render_template("gallery.html", medias=medias, query=query)
 
 @app.route("/files/<path:filename>")
 def files(filename):
