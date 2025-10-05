@@ -64,11 +64,12 @@ def gallery():
     query = request.args.get("q", "")
     session = Session()
     if query:
-        # 日付（例: "2025-10-05"）で検索
+        # 年月（例: "2025-10"）で検索
         try:
-            date_obj = datetime.datetime.strptime(query, "%Y-%m-%d")
+            year, month = query.split("-")
             medias = session.query(Media).filter(
-                func.date(Media.taken_at) == query
+                func.strftime("%Y", Media.taken_at) == year,
+                func.strftime("%m", Media.taken_at) == month.zfill(2)
             ).order_by(Media.taken_at.desc()).all()
         except ValueError:
             medias = session.query(Media).order_by(Media.taken_at.desc()).all()
