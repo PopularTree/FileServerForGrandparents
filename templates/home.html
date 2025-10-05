@@ -3,14 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <title>写真・動画共有</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-size: 3em;
+      text-align: center;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      font-size: 3.5em;
+      margin-top: 60px;
+      margin-bottom: 60px;
+      letter-spacing: 0.07em;
+    }
+    button {
+      font-size: 3em;
+      padding: 40px 0;
+      border-radius: 20px;
+      border: none;
+      background: #4caf50;
+      color: white;
+      margin: 32px 0;
+      cursor: pointer;
+      width: 98vw;
+      max-width: 600px;
+      box-shadow: 3px 3px 12px #bbb;
+      display: block;
+    }
+    a {
+      text-decoration: none;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 2em; }
+      h2 { font-size: 2.2em; margin-top: 36px; margin-bottom: 36px; }
+      button { font-size: 2em; padding: 24px 0; max-width: 99vw; }
+    }
+  </style>
 </head>
 <body>
-  <h2 style="font-size:2.5em; margin-top:32px;">ようこそ</h2>
+  <h2>ようこそ</h2>
   <a href="{{ url_for('upload_page') }}">
-    <button style="width:90vw; max-width:400px;">📤 写真・動画を送る</button>
-  </a><br><br>
+    <button>📤 写真・動画を送る</button>
+  </a>
   <a href="{{ url_for('gallery') }}">
-    <button style="width:90vw; max-width:400px;">🖼 ギャラリーを見る</button>
+    <button>🖼 ギャラリーを見る</button>
   </a>
 </body>
 </html>

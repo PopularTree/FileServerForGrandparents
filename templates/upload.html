@@ -3,12 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <title>写真・動画アップロード</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-size: 2.8em;
+      text-align: center;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 3em;
+      margin-top: 48px;
+      margin-bottom: 48px;
+      letter-spacing: 0.05em;
+    }
+    button {
+      font-size: 2.8em;
+      padding: 32px 0;
+      border-radius: 18px;
+      border: none;
+      background: #4caf50;
+      color: white;
+      margin: 24px 0;
+      cursor: pointer;
+      width: 96vw;
+      max-width: 550px;
+      box-shadow: 2px 2px 8px #bbb;
+      display: block;
+    }
+    input[type="file"] {
+      font-size: 2em;
+      padding: 18px;
+      border-radius: 12px;
+      width: 96vw;
+      max-width: 550px;
+      margin: 24px 0;
+      background: #fff;
+      border: 2px solid #ccc;
+    }
+    a {
+      font-size: 2em;
+      padding: 12px;
+      text-decoration: none;
+      color: #333;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 1.5em; }
+      h1 { font-size: 2em; margin-top: 32px; margin-bottom: 32px; }
+      button { font-size: 1.5em; padding: 18px 0; max-width: 99vw; }
+      input[type="file"] { font-size: 1em; padding: 10px; max-width: 99vw; }
+      a { font-size: 1.2em; }
+    }
+  </style>
 </head>
 <body>
-  <h1 style="font-size:2.2em; margin-top:32px;">📷 写真・動画アップロード</h1>
+  <h1>📷 写真・動画アップロード</h1>
   <form method="post" enctype="multipart/form-data">
     <input type="file" name="file" multiple accept="image/*,video/*"><br><br>
-    <button type="submit" style="width:90vw; max-width:400px;">アップロード</button>
+    <button type="submit">アップロード</button>
   </form>
   <br>
   <a href="/list">📂 保存済みファイルを見る</a>
