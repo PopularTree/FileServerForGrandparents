@@ -35,7 +35,7 @@
   <h2>ギャラリー</h2>
   <div class="search-box">
     <form method="get" action="{{ url_for('gallery') }}">
-      <input type="text" name="q" value="{{ query }}" placeholder="ファイル名で検索" style="font-size:18px; width:240px;">
+      <input type="text" name="q" value="{{ query }}" placeholder="例: 2025-10-05 で撮影日検索" style="font-size:18px; width:240px;">
       <button type="submit" style="font-size:18px;">🔍 検索</button>
       {% if query %}
         <a href="{{ url_for('gallery') }}">リセット</a>
@@ -57,7 +57,10 @@
         {% endif %}
         <div style="font-size:14px; margin-top:6px;">
           {{ m.original_name }}<br>
-          {{ m.uploaded_at.strftime('%Y-%m-%d %H:%M') }}
+          {% if m.taken_at %}
+            撮影: {{ m.taken_at.strftime('%Y-%m-%d %H:%M') }}<br>
+          {% endif %}
+          登録: {{ m.uploaded_at.strftime('%Y-%m-%d %H:%M') }}
         </div>
       </div>
     {% endfor %}

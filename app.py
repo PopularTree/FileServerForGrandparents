@@ -2,7 +2,12 @@ from flask import Flask, request, render_template, send_from_directory, redirect
 import os
 from werkzeug.utils import secure_filename
 from modules import Media, Session
-from utils import save_file, make_image_thumbnail, make_video_thumbnail, BASE_DIR, THUMB_DIR
+from utils import (
+    save_file, make_image_thumbnail, make_video_thumbnail,
+    BASE_DIR, THUMB_DIR, get_photo_datetime, get_video_datetime
+)
+from sqlalchemy import func
+import datetime
 
 ALLOWED_IMAGE = {"png", "jpg", "jpeg", "gif"}
 ALLOWED_VIDEO = {"mp4", "mov"}
@@ -35,11 +40,18 @@ def upload_page():
                     make_video_thumbnail(abs_path, thumb_path)
             except Exception:
                 pass
+            # メタデータから撮影日時取得
+            taken_at = None
+            if kind == "photos":
+                taken_at = get_photo_datetime(abs_path)
+            else:
+                taken_at = get_video_datetime(abs_path)
             # DB登録
             media = Media(
                 filename=rel_path,
                 original_name=file.filename,
-                media_type="image" if kind == "photos" else "video"
+                media_type="image" if kind == "photos" else "video",
+                taken_at=taken_at
             )
             session.add(media)
         session.commit()
@@ -52,11 +64,16 @@ def gallery():
     query = request.args.get("q", "")
     session = Session()
     if query:
-        medias = session.query(Media).filter(
-            Media.original_name.like(f"%{query}%")
-        ).order_by(Media.uploaded_at.desc()).all()
+        # 日付（例: "2025-10-05"）で検索
+        try:
+            date_obj = datetime.datetime.strptime(query, "%Y-%m-%d")
+            medias = session.query(Media).filter(
+                func.date(Media.taken_at) == query
+            ).order_by(Media.taken_at.desc()).all()
+        except ValueError:
+            medias = session.query(Media).order_by(Media.taken_at.desc()).all()
     else:
-        medias = session.query(Media).order_by(Media.uploaded_at.desc()).all()
+        medias = session.query(Media).order_by(Media.taken_at.desc()).all()
     session.close()
     return render_template("gallery.html", medias=medias, query=query)
 

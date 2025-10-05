@@ -18,5 +18,6 @@ class Media(Base):
     media_type = Column(String)        # 'image' or 'video'
     uploaded_at = Column(DateTime, default=datetime.datetime.utcnow)
     sender = Column(String)            # オプション: 送信者名等
+    taken_at = Column(DateTime)        # 追加: 撮影日時
 
 Base.metadata.create_all(engine)
