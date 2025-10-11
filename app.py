@@ -7,7 +7,6 @@ from utils import (
     BASE_DIR, THUMB_DIR, get_photo_datetime, get_video_datetime
 )
 from sqlalchemy import func
-import datetime
 
 ALLOWED_IMAGE = {"png", "jpg", "jpeg", "gif"}
 ALLOWED_VIDEO = {"mp4", "mov"}
